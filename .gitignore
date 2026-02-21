@@ -13,3 +13,11 @@ env/
 
 # Jupyter notebooks
 .ipynb_checkpoints/
+
+# Comments start with #
+folder/
+*.log
+!important.log
+__pycache__/
+
+.venv/
