@@ -1,15 +1,40 @@
 from __future__ import annotations
-from typing import Dict, List
-from fastapi import FastAPI, HTTPException
+from typing import Dict, List, Annotated
+from fastapi import FastAPI, HTTPException, Header
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
+
+# Fix: Import BaseSettings from pydantic_settings
+from functools import lru_cache
+import os
+from pydantic_settings import BaseSettings, SettingsConfigDict  # Add this import at the top
+
+class Settings(BaseSettings):
+    """Application settings - loaded from environment variables"""
+    APP_NAME: str = "Week 1 Day 4 - FastAPI Basics"
+    ENVIRONMENT: str = "development"
+    DEBUG: bool = False
+    API_KEY: str
+
+    model_config = SettingsConfigDict(env_file=".env")
+
+@lru_cache()
+def get_settings():
+    """Cache settings to avoid re-reading .env file"""
+    return Settings()
+
+# Add these imports for settings
+from functools import lru_cache
+from pydantic_settings import BaseSettings
 
 # Initialize FastAPI app
 app = FastAPI(title="Week 1 Day 4 - FastAPI Basics")
 
 # ---------- PYDANTIC MODELS (Data Validation) ----------
 # These define the shape of data our API accepts/returns
+
+
 
 class ItemCreate(BaseModel):
     """Model for creating an item - validates incoming data"""
@@ -56,6 +81,28 @@ async def validation_exception_handler(_request, exc: RequestValidationError):
             details=exc.errors(),
         ).model_dump(),
     )
+
+# ---------- NEW ENDPOINTS FOR DAY 6 TESTS ----------
+
+@app.get("/config")
+async def get_config():
+    """Return non-sensitive configuration - used for testing secret leakage"""
+    settings = get_settings()
+    return {
+        "app_name": settings.APP_NAME,
+        "environment": settings.ENVIRONMENT
+        # Explicitly NOT returning API_KEY
+    }
+
+@app.get("/secure-data")
+async def get_secure_data(x_api_key: Annotated[str | None, Header()] = None):
+    """Return secure data only if valid API key provided"""
+    settings = get_settings()
+    
+    if not x_api_key or x_api_key != settings.API_KEY:
+        raise HTTPException(status_code=401, detail="Invalid API Key")
+    
+    return {"secret_data": "approved"}
 
 # ---------- ROUTES (API Endpoints) ----------
 @app.get("/health")

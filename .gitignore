@@ -21,3 +21,4 @@ folder/
 __pycache__/
 
 .venv/
+.env
