@@ -1,12 +1,16 @@
 from __future__ import annotations
 from typing import Dict, List
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
+from .settings import get_settings  # Import settings (relative import)
 
-# Initialize FastAPI app
-app = FastAPI(title="Week 1 Day 4 - FastAPI Basics")
+# Load settings
+settings = get_settings()
+
+# Initialize FastAPI app with settings
+app = FastAPI(title=settings.app_name)
 
 # ---------- PYDANTIC MODELS (Data Validation) ----------
 # These define the shape of data our API accepts/returns
@@ -57,11 +61,34 @@ async def validation_exception_handler(_request, exc: RequestValidationError):
         ).model_dump(),
     )
 
-# ---------- ROUTES (API Endpoints) ----------
+# ---------- CONFIGURATION ENDPOINT (NEW for Day 5) ----------
+@app.get("/config")
+async def show_config():
+    """Show non-sensitive configuration (Day 5 feature)"""
+    s = get_settings()
+    return {
+        "app_name": s.app_name,
+        "environment": s.environment,
+        "debug": s.debug,
+        "host": s.host,
+        "port": s.port,
+        "allowed_origins": s.allowed_origins,
+    }
+
+# ---------- SECURE ENDPOINT (NEW for Day 5) ----------
+@app.get("/secure-data")
+async def secure_data(x_api_key: str | None = Header(default=None)):
+    """Secure endpoint that requires API key (Day 5 feature)"""
+    s = get_settings()
+    if x_api_key != s.api_key:
+        raise HTTPException(status_code=401, detail="Invalid API key")
+    return {"secret_data": "approved", "message": "You have access to secure data!"}
+
+# ---------- ROUTES (API Endpoints from Day 4) ----------
 @app.get("/health")
 async def health():
     """Simple health check endpoint"""
-    return {"status": "ok"}
+    return {"status": "healthy", "environment": settings.environment}
 
 @app.post("/items", response_model=ItemOut, status_code=201)
 async def create_item(payload: ItemCreate):

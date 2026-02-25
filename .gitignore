@@ -1,4 +1,14 @@
-# OS files
+# Virtual env
+.venv/
+
+# Env files
+.env
+.env.*# Virtual env
+.venv/
+
+# Env files
+.env
+.env.*# OS files
 .DS_Store
 Thumbs.db
 
