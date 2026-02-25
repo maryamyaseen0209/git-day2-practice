@@ -5,42 +5,18 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
-# Fix: Import BaseSettings from pydantic_settings
-from functools import lru_cache
-import os
-from pydantic_settings import BaseSettings, SettingsConfigDict  # Add this import at the top
-
-class Settings(BaseSettings):
-    """Application settings - loaded from environment variables"""
-    APP_NAME: str = "Week 1 Day 4 - FastAPI Basics"
-    ENVIRONMENT: str = "development"
-    DEBUG: bool = False
-    API_KEY: str
-
-    model_config = SettingsConfigDict(env_file=".env")
-
-@lru_cache()
-def get_settings():
-    """Cache settings to avoid re-reading .env file"""
-    return Settings()
-
-# Add these imports for settings
-from functools import lru_cache
-from pydantic_settings import BaseSettings
+# Import settings
+from .settings import get_settings, Settings
 
 # Initialize FastAPI app
 app = FastAPI(title="Week 1 Day 4 - FastAPI Basics")
 
 # ---------- PYDANTIC MODELS (Data Validation) ----------
-# These define the shape of data our API accepts/returns
-
-
-
 class ItemCreate(BaseModel):
     """Model for creating an item - validates incoming data"""
-    name: str = Field(min_length=1, max_length=50)  # name must be 1-50 chars
-    price: float = Field(gt=0)                       # price must be > 0
-    in_stock: bool = True                             # optional, defaults to True
+    name: str = Field(min_length=1, max_length=50)
+    price: float = Field(gt=0)
+    in_stock: bool = True
 
 class ItemOut(BaseModel):
     """Model for returning item data - what client sees"""
@@ -65,7 +41,6 @@ class ErrorResponse(BaseModel):
     details: list[dict] | None = None
 
 # ---------- IN-MEMORY DATABASE ----------
-# Simple dictionary to store items (instead of real database)
 items: Dict[int, ItemOut] = {}
 _next_id = 1
 
@@ -82,11 +57,10 @@ async def validation_exception_handler(_request, exc: RequestValidationError):
         ).model_dump(),
     )
 
-# ---------- NEW ENDPOINTS FOR DAY 6 TESTS ----------
-
+# ---------- CONFIGURATION ENDPOINT ----------
 @app.get("/config")
 async def get_config():
-    """Return non-sensitive configuration - used for testing secret leakage"""
+    """Return non-sensitive configuration"""
     settings = get_settings()
     return {
         "app_name": settings.APP_NAME,
@@ -94,6 +68,7 @@ async def get_config():
         # Explicitly NOT returning API_KEY
     }
 
+# ---------- SECURE ENDPOINT ----------
 @app.get("/secure-data")
 async def get_secure_data(x_api_key: Annotated[str | None, Header()] = None):
     """Return secure data only if valid API key provided"""
@@ -108,7 +83,8 @@ async def get_secure_data(x_api_key: Annotated[str | None, Header()] = None):
 @app.get("/health")
 async def health():
     """Simple health check endpoint"""
-    return {"status": "ok"}
+    settings = get_settings()
+    return {"status": "healthy", "environment": settings.ENVIRONMENT}
 
 @app.post("/items", response_model=ItemOut, status_code=201)
 async def create_item(payload: ItemCreate):
