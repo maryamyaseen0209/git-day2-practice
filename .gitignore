@@ -1,33 +1,25 @@
-# Virtual env
-.venv/
-
-# Env files
-.env
-.env.*# Virtual env
-.venv/
-
-# Env files
-.env
-.env.*# OS files
-.DS_Store
-Thumbs.db
-
-# Python bytecode
-__pycache__/
-*.pyc
-
-# Virtual environments
+# Virtual Environment
 .venv/
 venv/
+ENV/
 env/
 
-# Jupyter notebooks
-.ipynb_checkpoints/
+# Environment Variables
+.env
+.env.*
+!.env.example
 
-# Comments start with #
-folder/
-*.log
-!important.log
+# Python
 __pycache__/
+*.py[cod]
+*.so
+.Python
+*.egg-info/
+dist/
+build/
 
-.venv/
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

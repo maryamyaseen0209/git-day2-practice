@@ -6,6 +6,7 @@ from typing import List
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
 class Settings(BaseSettings):
     """
     Central configuration object.
@@ -25,13 +26,13 @@ class Settings(BaseSettings):
     debug: bool = Field(default=False, validation_alias="DEBUG")
     host: str = Field(default="127.0.0.1", validation_alias="HOST")
     port: int = Field(default=8000, validation_alias="PORT")
-    
+
     # Example secret. In real projects, treat this as sensitive.
     api_key: str = Field(..., validation_alias="API_KEY")
-    
+
     # Comma-separated list in .env -> parsed into list[str] using custom logic
     allowed_origins_raw: str = Field(default="", validation_alias="ALLOWED_ORIGINS")
-    
+
     @property
     def allowed_origins(self) -> List[str]:
         raw = self.allowed_origins_raw.strip()
