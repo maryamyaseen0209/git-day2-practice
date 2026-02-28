@@ -21,8 +21,8 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    app_name: str = Field(default="FastAPI App", validation_alias="APP_NAME")
-    environment: str = Field(default="dev", validation_alias="ENVIRONMENT")
+    APP_NAME: str = Field(default="FastAPI App", validation_alias="APP_NAME")
+    ENVIRONMENT: str = Field(default="dev", validation_alias="ENVIRONMENT")
     debug: bool = Field(default=False, validation_alias="DEBUG")
     host: str = Field(default="127.0.0.1", validation_alias="HOST")
     port: int = Field(default=8000, validation_alias="PORT")
