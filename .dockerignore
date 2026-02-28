@@ -1,0 +1,18 @@
+.git
+.gitignore
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Local environments
+.venv/
+.env
+.env.*
+*.log
+
+# Test / tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
