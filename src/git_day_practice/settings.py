@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     debug: bool = Field(default=False, validation_alias="DEBUG")
     host: str = Field(default="127.0.0.1", validation_alias="HOST")
     port: int = Field(default=8000, validation_alias="PORT")
+    database_url: str = Field(..., validation_alias="DATABASE_URL")
+    qdrant_url: str = Field(..., validation_alias="QDRANT_URL")
 
     # Example secret. In real projects, treat this as sensitive.
     api_key: str = Field(..., validation_alias="API_KEY")

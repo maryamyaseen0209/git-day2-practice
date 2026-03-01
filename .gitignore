@@ -1,6 +1,10 @@
 # Environment Variables
 .env
 .env.*
+*.env
+
+# Allow example env files
+!.env.compose.example
 !.env.example
 
 # Virtual Environment
