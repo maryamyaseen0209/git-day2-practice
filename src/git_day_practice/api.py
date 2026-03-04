@@ -1,15 +1,17 @@
 from __future__ import annotations
-
 from typing import Annotated, Dict, List
 
-import psycopg
-from fastapi import FastAPI, Header, HTTPException
+from fastapi import FastAPI, Header, HTTPException, Depends
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from qdrant_client import QdrantClient
+from sqlalchemy.orm import Session
 
 from .settings import get_settings
+from .db import get_db
+from .models import Item
+
 
 # Import settings
 
@@ -133,14 +135,53 @@ async def debug_api_key():
 # ---------- ROUTES (API Endpoints) ----------
 
 
+
+# Add these new routes
+@app.post("/db/items", status_code=201)
+async def create_db_item(payload: ItemCreate, db: Session = Depends(get_db)):
+    """Create a new item in the database"""
+    item = Item(
+        name=payload.name,
+        price=payload.price,
+        in_stock=payload.in_stock,
+    )
+    db.add(item)
+    db.commit()
+    db.refresh(item)
+    return {
+        "id": item.id,
+        "name": item.name,
+        "price": item.price,
+        "in_stock": item.in_stock,
+        "created_at": item.created_at,
+    }
+
+
+@app.get("/db/items")
+async def list_db_items(db: Session = Depends(get_db)):
+    """List all items from the database"""
+    items = db.query(Item).order_by(Item.id.asc()).all()
+    return [
+        {
+            "id": x.id,
+            "name": x.name,
+            "price": x.price,
+            "in_stock": x.in_stock,
+            "created_at": x.created_at,
+        }
+        for x in items
+    ]
+
+
 @app.get("/db/health")
 async def db_health():
-    s = get_settings()
     try:
-        with psycopg.connect(s.database_url) as conn:
-            with conn.cursor() as cur:
-                cur.execute("SELECT 1;")
-                _ = cur.fetchone()
+        from sqlalchemy import text
+
+        from .db import engine
+
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
         return {"postgres": "ok"}
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"postgres not ready: {e}") from e
