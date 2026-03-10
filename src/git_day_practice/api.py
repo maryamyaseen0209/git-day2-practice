@@ -1,17 +1,17 @@
 from __future__ import annotations
+
 from typing import Annotated, Dict, List
 
-from fastapi import FastAPI, Header, HTTPException, Depends
+from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from qdrant_client import QdrantClient
 from sqlalchemy.orm import Session
 
-from .settings import get_settings
 from .db import get_db
 from .models import Item
-
+from .settings import get_settings
 
 # Import settings
 
@@ -133,7 +133,6 @@ async def debug_api_key():
 
 
 # ---------- ROUTES (API Endpoints) ----------
-
 
 
 # Add these new routes
