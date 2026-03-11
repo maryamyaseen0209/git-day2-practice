@@ -1,0 +1,32 @@
+[
+  {
+    "id": "doc1",
+    "text": "Python is a programming language used for building APIs and web applications.",
+    "language": "en",
+    "category": "programming"
+  },
+  {
+    "id": "doc2",
+    "text": "FastAPI helps you build APIs quickly with Python.",
+    "language": "en",
+    "category": "programming"
+  },
+  {
+    "id": "doc3",
+    "text": "است Python یک زبان برنامه‌نویسی است",
+    "language": "fa",
+    "category": "programming"
+  },
+  {
+    "id": "doc4",
+    "text": "Python ist eine Programmiersprache für Webentwicklung",
+    "language": "de",
+    "category": "programming"
+  },
+  {
+    "id": "doc5",
+    "text": "Search systems help find relevant information quickly.",
+    "language": "en",
+    "category": "search"
+  }
+]

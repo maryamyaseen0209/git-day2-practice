@@ -27,3 +27,14 @@ build/
 .idea/
 *.swp
 *.swo
+
+# Day 12 caches
+.cache/huggingface/
+.cache/embeddings/
+*.bin
+*.safetensors
+*.msgpack
+*.h5
+*.log
+
+# (make sure there's a blank line at the end)
