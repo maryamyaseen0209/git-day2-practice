@@ -1,8 +1,17 @@
 On branch feature/week2-day13-ingestion-cleanup
 Your branch is up to date with 'origin/feature/week2-day13-ingestion-cleanup'.
 
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   docs/screenshots/week2/day13/06-git-status-clean.txt
+
 Untracked files:
   (use "git add <file>..." to include in what will be committed)
-	docs/screenshots/week2/day13/
+	docs/screenshots/week2/day13/01-repo-structure.txt
+	docs/screenshots/week2/day13/02-readme-root.txt
+	docs/screenshots/week2/day13/03-ingestion-run.txt
+	docs/screenshots/week2/day13/04-qdrant-collection.txt
+	docs/screenshots/week2/day13/05-search-results.txt
 
-nothing added to commit but untracked files present (use "git add" to track)
+no changes added to commit (use "git add" and/or "git commit -a")
