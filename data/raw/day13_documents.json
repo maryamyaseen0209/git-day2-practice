@@ -1,0 +1,30 @@
+[
+  {
+    "doc_id": "guide-001",
+    "title": "FastAPI Basics",
+    "language": "en",
+    "source": "manual",
+    "text": "FastAPI is a Python framework used to build APIs quickly. It provides automatic OpenAPI docs, validation through Pydantic, and a developer-friendly routing model. Teams often use it for backend services, internal tools, and AI APIs."
+  },
+  {
+    "doc_id": "guide-002",
+    "title": "Qdrant Vector Database",
+    "language": "en",
+    "source": "manual",
+    "text": "Qdrant is a vector similarity database. It stores vectors with payload and provides API for vector search. It supports filtering, pagination, and various distance metrics like cosine similarity and Euclidean distance."
+  },
+  {
+    "doc_id": "guide-003",
+    "title": "Sentence Transformers",
+    "language": "en",
+    "source": "manual",
+    "text": "Sentence Transformers are models that convert text into fixed-size vectors. These vectors capture semantic meaning, allowing similarity search. The multilingual models support over 50 languages."
+  },
+  {
+    "doc_id": "guide-004",
+    "title": "RAG Systems",
+    "language": "en",
+    "source": "manual",
+    "text": "Retrieval-Augmented Generation combines vector search with LLMs. First retrieve relevant chunks from a vector database, then use an LLM to generate answers based on retrieved context."
+  }
+]
