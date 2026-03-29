@@ -38,3 +38,15 @@ build/
 *.log
 
 # (make sure there's a blank line at the end)
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+.cache/
+.pytest_cache/
+.ruff_cache/
+*.log
+data/generated/
+dist/
+build/
