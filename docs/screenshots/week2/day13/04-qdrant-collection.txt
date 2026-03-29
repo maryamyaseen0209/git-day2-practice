@@ -1,1 +1,0 @@
-{"result":{"collections":[{"name":"week2_day13_chunks"},{"name":"week2_day12_docs"}]},"status":"ok","time":0.007346254}
