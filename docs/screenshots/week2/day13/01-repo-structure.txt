@@ -1,0 +1,39 @@
+.
+├── Dockerfile
+├── README.md
+├── alembic
+│   ├── README
+│   ├── env.py
+│   ├── script.py.mako
+│   └── versions
+├── alembic.ini
+├── build-output.txt
+├── c
+├── calculator.py
+├── data
+│   ├── day12_documents.json
+│   ├── processed
+│   └── raw
+├── docker-compose.yml
+├── docker.env
+├── docs
+│   └── screenshots
+├── pyproject.toml
+├── requirements.txt
+├── scripts
+│   ├── day11_qdrant_basics.py
+│   ├── day12_embeddings_baseline.py
+│   ├── day13_ingest_chunks.py
+│   └── day13_search_chunks.py
+├── src
+│   ├── __init__.py
+│   └── git_day_practice
+└── tests
+    ├── __init__.py
+    ├── conftest.py
+    ├── test_config.py
+    ├── test_health.py
+    ├── test_secure.py
+    └── test_validation.py
+
+12 directories, 25 files
