@@ -20,3 +20,33 @@ class RagResponse(BaseModel):
     normalized_query: str
     answer: str
     sources: list[RagSourceItem]
+
+# Add these classes
+class AgentRequest(BaseModel):
+    question: str = Field(min_length=1, description="The user question.")
+    limit: int = Field(default=3, ge=1, le=10, description="Number of chunks to retrieve.")
+
+
+class RagSourceItem(BaseModel):
+    doc_id: str
+    chunk_id: str
+    title: str
+    text: str
+    score: float
+
+
+class RagConfidence(BaseModel):
+    top_score: float
+    avg_score: float
+    result_count: int
+
+
+class AgentResponse(BaseModel):
+    question: str
+    normalized_query: str
+    plan: list[str]
+    action: str
+    reason: str
+    answer: str
+    confidence: RagConfidence
+    sources: list[RagSourceItem]
