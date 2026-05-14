@@ -1,0 +1,20 @@
+{
+  "points": [
+    {
+      "id": 1,
+      "vector": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+      "payload": {
+        "text": "Qdrant is a vector similarity search engine and vector database. It provides a production-ready service with convenient API to store, search, and manage vectors with additional payload.",
+        "source": "documentation"
+      }
+    },
+    {
+      "id": 2,
+      "vector": [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.0],
+      "payload": {
+        "text": "This system uses Qdrant to store document embeddings and perform semantic search. The agent loop retrieves relevant documents to answer user questions.",
+        "source": "system_docs"
+      }
+    }
+  ]
+}

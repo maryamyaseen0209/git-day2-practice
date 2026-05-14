@@ -50,3 +50,9 @@ __pycache__/
 data/generated/
 dist/
 build/
+
+
+docker.env
+.env.compose".env*
+docker.env
+*.env.example
