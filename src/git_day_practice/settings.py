@@ -1,49 +1,32 @@
+from pydantic_settings import BaseSettings
 
-from __future__ import annotations
-import os
-from typing import Optional
-
-class Settings:
-    """Simple settings class without Pydantic for now."""
-    
-    # Database
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://maryam205:@localhost:5432/git_day_practice")
-    
-    # Qdrant
-    QDRANT_HOST: str = os.getenv("QDRANT_HOST", "localhost")
-    QDRANT_PORT: int = int(os.getenv("QDRANT_PORT", "6333"))
-    QDRANT_COLLECTION: str = os.getenv("QDRANT_COLLECTION", "documents")
-
-    qdrant_url: str = 'http://qdrant:6333'
+class Settings(BaseSettings):
+    database_url: str = "postgresql://postgres:postgres123@postgres:5432/appdb"
+    qdrant_url: str = "http://qdrant:6333"
     qdrant_collection_name: str = "documents"
+    groq_api_key: str = "test_key"
+    groq_model: str = "llama-3.1-8b-instant"
     
-    # LLM settings
-    EMBEDDING_MODEL_NAME: str = os.getenv("EMBEDDING_MODEL_NAME", "BAAI/bge-small-en-v1.5")
-    LLM_MODEL_NAME: str = os.getenv("LLM_MODEL_NAME", "gpt-3.5-turbo")
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
+    # Feature flags
+    dual_query_enabled: bool = True
+    normalization_enabled: bool = True
+    merged_search_limit: int = 5
+    
+    # RAG settings
+    min_top_score_for_answer: float = 0.55
+    min_avg_score_for_answer: float = 0.45
+    min_results_for_answer: int = 2
     
     # Agent settings
-    ENABLE_AGENT_LOOP: bool = os.getenv("ENABLE_AGENT_LOOP", "true").lower() == "true"
-    MAX_AGENT_STEPS: int = int(os.getenv("MAX_AGENT_STEPS", "4"))
-    ENABLE_AGENT_LOGGING: bool = os.getenv("ENABLE_AGENT_LOGGING", "true").lower() == "true"
+    enable_clarify_behavior: bool = True
+    enable_refuse_behavior: bool = True
+    enable_rag_logging: bool = True
+    enable_agent_loop: bool = True
+    enable_agent_logging: bool = True
+    max_agent_steps: int = 4
     
-    # Retrieval
-    RETRIEVAL_LIMIT: int = int(os.getenv("RETRIEVAL_LIMIT", "5"))
-    SIMILARITY_THRESHOLD: float = float(os.getenv("SIMILARITY_THRESHOLD", "0.5"))
+    class Config:
+        env_file = ".env"
+        case_sensitive = False
 
-# Create instance
 settings = Settings()
-
-# Also add lowercase aliases for compatibility
-settings.database_url = settings.DATABASE_URL
-settings.qdrant_host = settings.QDRANT_HOST
-settings.qdrant_port = settings.QDRANT_PORT
-settings.qdrant_collection = settings.QDRANT_COLLECTION
-settings.embedding_model_name = settings.EMBEDDING_MODEL_NAME
-settings.llm_model_name = settings.LLM_MODEL_NAME
-settings.openai_api_key = settings.OPENAI_API_KEY
-settings.enable_agent_loop = settings.ENABLE_AGENT_LOOP
-settings.max_agent_steps = settings.MAX_AGENT_STEPS
-settings.enable_agent_logging = settings.ENABLE_AGENT_LOGGING
-settings.retrieval_limit = settings.RETRIEVAL_LIMIT
-settings.similarity_threshold = settings.SIMILARITY_THRESHOLD
