@@ -13,6 +13,9 @@ class Settings:
     QDRANT_HOST: str = os.getenv("QDRANT_HOST", "localhost")
     QDRANT_PORT: int = int(os.getenv("QDRANT_PORT", "6333"))
     QDRANT_COLLECTION: str = os.getenv("QDRANT_COLLECTION", "documents")
+
+    qdrant_url: str = 'http://qdrant:6333'
+    qdrant_collection_name: str = "documents"
     
     # LLM settings
     EMBEDDING_MODEL_NAME: str = os.getenv("EMBEDDING_MODEL_NAME", "BAAI/bge-small-en-v1.5")

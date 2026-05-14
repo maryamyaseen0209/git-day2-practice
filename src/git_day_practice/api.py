@@ -10,6 +10,11 @@ from git_day_practice.settings import settings
 from git_day_practice.agent import run_agent_loop
 from git_day_practice.logging_utils import create_agent_log
 
+from fastapi import HTTPException
+import psycopg2
+from qdrant_client import QdrantClient
+from git_day_practice.settings import settings
+
 # Pydantic models for requests/responses
 from pydantic import BaseModel, Field
 
@@ -43,6 +48,29 @@ app = FastAPI(
     description="Day 15-18: RAG with agent loop",
     version="1.0.0"
 )
+
+
+
+@app.get("/health/ready")
+def ready_health() -> dict[str, str]:
+    """Production readiness check - verifies all dependencies are accessible."""
+    # Check Postgres
+    try:
+        with psycopg2.connect(settings.database_url) as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT 1;")
+                cur.fetchone()
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"postgres not ready: {exc}") from exc
+    
+    # Check Qdrant
+    try:
+        client = QdrantClient(url=settings.qdrant_url)
+        client.get_collections()
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"qdrant not ready: {exc}") from exc
+    
+    return {"status": "ready"}
 
 # Day 15: Basic RAG endpoint
 @app.post("/rag", response_model=RAGResponse)
